@@ -26,6 +26,8 @@ import type { ElForm, FormRules } from 'element-plus'
 import { reactive, ref } from 'vue'
 import localCache from '@/utils/cache'
 import { loginStore } from '@/store/login'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const store = loginStore()
 const formRef = ref<InstanceType<typeof ElForm>>()
 const formAccount = reactive({
@@ -42,7 +44,7 @@ const accountRules = reactive<FormRules>({
     { min: 6, max: 12, message: '密码要在6-12个数字之间', trigger: 'blur' }
   ]
 })
-
+//点击登录
 const loginAction = (isKeepPassword: boolean) => {
   formRef.value?.validate((vaild: boolean) => {
     if (vaild) {
@@ -56,6 +58,9 @@ const loginAction = (isKeepPassword: boolean) => {
         localCache.deleteCache('password')
       }
       store.loginAction({ ...formAccount })
+      router.push({
+        path: '/main'
+      })
     }
   })
 }

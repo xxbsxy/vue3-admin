@@ -1,14 +1,15 @@
 import Request from './request/request'
-
+import LocalCache from '../utils/cache'
 const myRequest = new Request({
-  baseURL: 'http://127.0.0.1:8888/api/private/v1/',
+  baseURL: '/api',
   timeout: 5000,
   interceptors: {
-    requestInterceptor: (config) => {
-      // const token = ''
-      // if (token) {
-      //   config.headers.Authorization = `Bearer ${token}`
-      // }
+    requestInterceptor: (config: any) => {
+      const token = LocalCache.getCache('token')
+      if (token) {
+        config.headers.Authorization = `${token}`
+      }
+
       return config
     },
     requestInterceptorCatch: (err) => {
