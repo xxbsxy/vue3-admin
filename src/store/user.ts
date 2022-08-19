@@ -56,7 +56,6 @@ export const userStore = defineStore('user', {
     },
     async addUser(data:addUserList){
       const res:any = await addUser(data)
-      console.log(res);
       if(res.meta.status === 201){
         ElMessage.success('创建用户成功')
      }else {

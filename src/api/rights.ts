@@ -1,8 +1,8 @@
 import myRequest from './api'
 
-export function getMenu() {
+export function getRightsList() {
   return myRequest.request({
-    url: '/menus',
+    url: 'rights/list',
   })
 }
 

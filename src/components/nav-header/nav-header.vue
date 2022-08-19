@@ -30,7 +30,7 @@ import { Fold, Expand } from '@element-plus/icons-vue'
 import { loginStore } from '@/store/login'
 import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
-import localCache from '../../utils/cache.ts'
+import localCache from '../../utils/cache'
 const route = useRoute()
 const router = useRouter()
 const store = loginStore()

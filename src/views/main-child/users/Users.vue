@@ -28,7 +28,7 @@
       <el-table-column prop="email" label="邮箱" width="180" />
       <el-table-column prop="email" label="创建时间" width="200">
         <template #default="scope">
-          {{ formatTimeStamp(scope.row.create_time) }}
+          {{ formatTimeStamp(scope.row.create_time * 1000) }}
         </template>
       </el-table-column>
       <el-table-column prop="role_name" label="角色" width="150" />
@@ -107,7 +107,7 @@
   <el-dialog v-model="editUserdialogVisible" title="编辑用户" width="30%">
     <el-form :model="editUserform" label-width="80px" :rules="editUserRules" ref="editUserFormRef">
       <el-form-item label="用户名" prop="username">
-        <el-input v-model="addUserform.username" />
+        <el-input v-model="editUserform.username" />
       </el-form-item>
       <el-form-item label="邮箱" prop="email">
         <el-input v-model="editUserform.email" />
@@ -133,7 +133,7 @@ import { Search, Refresh, EditPen, Delete, Setting } from '@element-plus/icons-v
 import { reactive, ref, onMounted } from 'vue'
 import { userStore } from '@/store/user'
 import { storeToRefs } from 'pinia'
-import { formatTimeStamp } from '../../../utils/formatTimeStamp.js'
+import { formatTimeStamp } from '../../../utils/formatTimeStamp'
 import { ElMessageBox } from 'element-plus'
 const store = userStore()
 const { users, total } = storeToRefs(store)
@@ -144,8 +144,8 @@ const pageSize = ref(10) //每页显示条数
 const pageNum = ref(1) //当前页码
 const addUserdialogVisible = ref(false)
 const editUserdialogVisible = ref(false)
-const addUserFormRef = ref(null)
-const editUserFormRef = ref(null)
+const addUserFormRef = ref()
+const editUserFormRef = ref()
 const addUserform = reactive({
   username: '123456',
   password: '123456',
@@ -205,12 +205,12 @@ const editUserRules = reactive({
   ]
 })
 //每页显示条数改变触发
-const handleSizeChange = (newPageSize) => {
+const handleSizeChange = (newPageSize: number) => {
   store.getUsers({ pagenum: pageNum.value, pagesize: newPageSize })
   pageSize.value = newPageSize
 }
 //页码改变触发
-const handleCurrentChange = (newPageNum) => {
+const handleCurrentChange = (newPageNum: number) => {
   store.getUsers({ pagenum: newPageNum, pagesize: pageSize.value })
   pageNum.value = newPageNum
 }
@@ -219,32 +219,36 @@ const searchUser = () => {
   if (userForm.id === '') {
     store.getUsers({ pagenum: 1, pagesize: 10 })
   } else {
-    store.getUsersFromId(userForm.id)
+    store.getUsersFromId(Number(userForm.id))
   }
 }
 //点击确认添加用户
 const addUser = () => {
-  addUserFormRef.value.validate((isValidate) => {
+  addUserFormRef.value.validate((isValidate: boolean) => {
     if (isValidate) {
       store.addUser(addUserform)
-      store.getUsers({ pagenum: pageNum.value, pagesize: pageSize.value })
+      setTimeout(() => {
+        store.getUsers({ pagenum: pageNum.value, pagesize: pageSize.value })
+      }, 100)
     }
   })
   addUserdialogVisible.value = false
 }
 //删除用户
-const deleteUser = (id, username) => {
+const deleteUser = (id: number, username: string) => {
   ElMessageBox.confirm(`确认删除用户${username}吗`, '删除用户', {
     confirmButtonText: 'OK',
     cancelButtonText: 'Cancel',
     type: 'warning'
   }).then(() => {
     store.deleteUsersFromId(id)
-    store.getUsers({ pagenum: pageNum.value, pagesize: pageSize.value })
+    setTimeout(() => {
+      store.getUsers({ pagenum: pageNum.value, pagesize: pageSize.value })
+    }, 100)
   })
 }
 //点击编辑按钮获得用户信息
-const editGetUser = (username, email, mobile, id) => {
+const editGetUser = (username: string, email: string, mobile: string, id: number) => {
   editUserdialogVisible.value = true
   editUserform.username = username
   editUserform.email = email
@@ -253,7 +257,7 @@ const editGetUser = (username, email, mobile, id) => {
 }
 //点击确认编修改用户信息
 const editUser = () => {
-  editUserFormRef.value.validate((isValidate) => {
+  editUserFormRef.value.validate((isValidate: boolean) => {
     if (isValidate) {
       const newArr = store.editUsersFromId(editUserform)
       store.getUsers({ pagenum: pageNum.value, pagesize: pageSize.value })
@@ -262,7 +266,7 @@ const editUser = () => {
   editUserdialogVisible.value = false
 }
 //修改用户状态
-const changeStatus = (uid, type) => {
+const changeStatus = (uid: number, type: boolean) => {
   store.changeUserStatus({ uid, type })
 }
 //重置
