@@ -7,9 +7,7 @@
 <script lang="ts">
 export default { name: 'App' }
 </script>
-<script setup lang="ts">
-import Main from './views/main/Main.vue'
-</script>
+<script setup lang="ts"></script>
 <style scoped lang="less">
 @import './assets/css/base.css';
 @import './assets/css/globe.css';

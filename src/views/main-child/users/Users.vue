@@ -5,7 +5,7 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-form-item>
-            <el-input placeholder="请输入需要查询的id" width="200px" v-model.number="userForm.id" />
+            <el-input placeholder="请输入用户名称" width="200px" v-model.number="query" />
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -26,7 +26,7 @@
       <el-table-column prop="username" label="姓名" width="150" />
       <el-table-column prop="mobile" label="手机号码" width="180" />
       <el-table-column prop="email" label="邮箱" width="180" />
-      <el-table-column prop="email" label="创建时间" width="200">
+      <el-table-column prop="email" label="创建时间" width="180">
         <template #default="scope">
           {{ formatTimeStamp(scope.row.create_time * 1000) }}
         </template>
@@ -62,8 +62,14 @@
             >
               删除
             </el-link>
-
-            <el-link type="warning" :icon="Setting" :underline="false">分配权限</el-link>
+            <el-link
+              type="warning"
+              :icon="Setting"
+              :underline="false"
+              @click="getUserRole(scope.row.id, scope.row.username, scope.row.role_name)"
+            >
+              分配角色
+            </el-link>
           </div>
         </template>
       </el-table-column>
@@ -123,6 +129,28 @@
       </span>
     </template>
   </el-dialog>
+  <!-- 分配角色对话框 -->
+  <el-dialog v-model="assignRoledialogVisible" title="编辑用户" width="30%">
+    <el-form :model="assignRoleform" label-width="100px" ref="assignRoleFormRef">
+      <el-form-item label="用户名: ">
+        {{ assignRoleform.username }}
+      </el-form-item>
+      <el-form-item label="当前角色: ">
+        {{ assignRoleform.role_name }}
+      </el-form-item>
+      <el-form-item label="分配新角色: ">
+        <el-select class="m-2" placeholder="Select" v-model="assignRoleform.roleId">
+          <el-option v-for="item in roles" :key="item.id" :label="item.roleName" :value="item.id" />
+        </el-select>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="assignRoledialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="assignRole">确认</el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script lang="ts">
@@ -133,24 +161,26 @@ import { Search, Refresh, EditPen, Delete, Setting } from '@element-plus/icons-v
 import { reactive, ref, onMounted } from 'vue'
 import { userStore } from '@/store/user'
 import { storeToRefs } from 'pinia'
-import { formatTimeStamp } from '../../../utils/formatTimeStamp'
+import { formatTimeStamp } from '@/utils/formatTimeStamp'
 import { ElMessageBox } from 'element-plus'
 const store = userStore()
-const { users, total } = storeToRefs(store)
+const { users, total, roles } = storeToRefs(store)
 const userForm = reactive({
   id: ''
 })
-const pageSize = ref(10) //每页显示条数
-const pageNum = ref(1) //当前页码
+let pageSize = ref(10) //每页显示条数
+let pageNum = ref(1) //当前页码
+let query = ref('')
 const addUserdialogVisible = ref(false)
 const editUserdialogVisible = ref(false)
+const assignRoledialogVisible = ref(false)
 const addUserFormRef = ref()
 const editUserFormRef = ref()
 const addUserform = reactive({
-  username: '123456',
-  password: '123456',
-  email: '123222@qq.com',
-  mobile: '18001439901'
+  username: '',
+  password: '',
+  email: '',
+  mobile: ''
 })
 const addUserRules = reactive({
   username: [
@@ -204,6 +234,12 @@ const editUserRules = reactive({
     }
   ]
 })
+const assignRoleform = reactive({
+  id: -1,
+  username: '',
+  role_name: '',
+  roleId: ''
+})
 //每页显示条数改变触发
 const handleSizeChange = (newPageSize: number) => {
   store.getUsers({ pagenum: pageNum.value, pagesize: newPageSize })
@@ -216,20 +252,21 @@ const handleCurrentChange = (newPageNum: number) => {
 }
 //根据id查询
 const searchUser = () => {
-  if (userForm.id === '') {
+  if (query.value === '') {
     store.getUsers({ pagenum: 1, pagesize: 10 })
+    pageNum.value = 1
+    pageSize.value = 10
   } else {
-    store.getUsersFromId(Number(userForm.id))
+    store.getUsers({ pagenum: 1, pagesize: 10, query: query.value })
   }
 }
 //点击确认添加用户
 const addUser = () => {
   addUserFormRef.value.validate((isValidate: boolean) => {
     if (isValidate) {
-      store.addUser(addUserform)
-      setTimeout(() => {
+      store.addUser(addUserform).then(() => {
         store.getUsers({ pagenum: pageNum.value, pagesize: pageSize.value })
-      }, 100)
+      })
     }
   })
   addUserdialogVisible.value = false
@@ -241,10 +278,9 @@ const deleteUser = (id: number, username: string) => {
     cancelButtonText: 'Cancel',
     type: 'warning'
   }).then(() => {
-    store.deleteUsersFromId(id)
-    setTimeout(() => {
+    store.deleteUsersFromId(id).then(() => {
       store.getUsers({ pagenum: pageNum.value, pagesize: pageSize.value })
-    }, 100)
+    })
   })
 }
 //点击编辑按钮获得用户信息
@@ -259,11 +295,26 @@ const editGetUser = (username: string, email: string, mobile: string, id: number
 const editUser = () => {
   editUserFormRef.value.validate((isValidate: boolean) => {
     if (isValidate) {
-      const newArr = store.editUsersFromId(editUserform)
-      store.getUsers({ pagenum: pageNum.value, pagesize: pageSize.value })
+      const newArr = store.editUsersFromId(editUserform).then(() => {
+        store.getUsers({ pagenum: pageNum.value, pagesize: pageSize.value })
+      })
     }
   })
   editUserdialogVisible.value = false
+}
+//点击分配角色按钮获得用户信息
+const getUserRole = (id: number, username: string, role_name: string) => {
+  assignRoleform.id = id
+  assignRoleform.username = username
+  assignRoleform.role_name = role_name
+  assignRoledialogVisible.value = true
+}
+//点击确认分配角色
+const assignRole = () => {
+  store.assignUserRole({ id: assignRoleform.id, rid: Number(assignRoleform.roleId) }).then(() => {
+    store.getUsers({ pagenum: pageNum.value, pagesize: pageSize.value })
+  })
+  assignRoledialogVisible.value = false
 }
 //修改用户状态
 const changeStatus = (uid: number, type: boolean) => {
@@ -271,8 +322,10 @@ const changeStatus = (uid: number, type: boolean) => {
 }
 //重置
 const resetForm = () => {
-  userForm.id = ''
+  query.value = ''
   store.getUsers({ pagenum: 1, pagesize: 10 })
+  pageNum.value = 1
+  pageSize.value = 10
 }
 onMounted(() => {
   store.getUsers({ pagenum: 1, pagesize: 10 })

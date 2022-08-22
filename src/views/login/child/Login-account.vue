@@ -23,7 +23,7 @@ export default { name: 'Login-account' }
 </script>
 <script setup lang="ts">
 import type { ElForm, FormRules } from 'element-plus'
-import { reactive, ref } from 'vue'
+import { reactive, ref, nextTick } from 'vue'
 import localCache from '@/utils/cache'
 import { loginStore } from '@/store/login'
 import { useRouter } from 'vue-router'
@@ -31,8 +31,8 @@ const router = useRouter()
 const store = loginStore()
 const formRef = ref<InstanceType<typeof ElForm>>()
 const formAccount = reactive({
-  username: localCache.getCache('username') ?? '',
-  password: localCache.getCache('password') ?? ''
+  username: localCache.getCache('username') ?? 'admin',
+  password: localCache.getCache('password') ?? '123456'
 })
 const accountRules = reactive<FormRules>({
   username: [
@@ -57,9 +57,10 @@ const loginAction = (isKeepPassword: boolean) => {
         localCache.deleteCache('username')
         localCache.deleteCache('password')
       }
-      store.loginAction({ ...formAccount })
-      router.push({
-        path: '/main'
+      store.loginAction({ ...formAccount }).then(() => {
+        router.push({
+          path: '/main'
+        })
       })
     }
   })

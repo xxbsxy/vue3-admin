@@ -50,3 +50,12 @@ export function changeUserStatus(uId:number,type:boolean) {
   })
 }
 
+export function assignUserRole(id:number,rid:number) {
+  return myRequest.request({
+    url: `users/${id}/role`,
+    method:'put',
+    data:{
+      rid
+    }
+  })
+}

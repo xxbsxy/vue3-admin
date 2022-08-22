@@ -4,24 +4,25 @@
     <el-row :gutter="20" class="search-area">
       <el-col :span="6">
         <el-form-item>
-          <el-input placeholder="请输入商品id" width="200px" v-model.number="goosId" />
+          <el-input placeholder="请输入商品名称" width="200px" v-model.number="query" />
         </el-form-item>
       </el-col>
       <el-col :span="6">
-        <el-button type="primary" :icon="Search">查询</el-button>
-        <el-button :icon="Refresh">重置</el-button>
+        <el-button type="primary" :icon="Search" @click="searchGoods">查询</el-button>
+        <el-button :icon="Refresh" @click="reset">重置</el-button>
       </el-col>
     </el-row>
+    <!-- 商品列表 -->
     <div class="goods-list">
       商品列表
       <el-button type="primary" class="add-btn"> 添加商品 </el-button>
     </div>
     <el-table :data="goods" stripe style="width: 100%" border>
       <el-table-column type="index" width="60" label="序号" />
-      <el-table-column prop="goods_name" label="商品名称" width="600px" />
-      <el-table-column prop="goods_price" label="商品价格" />
-      <el-table-column prop="goods_number" label="商品数量" />
-      <el-table-column prop="email" label="更新时间" width="200">
+      <el-table-column prop="goods_name" label="商品名称" width="700px" />
+      <el-table-column prop="goods_price" label="商品价格" width="150" />
+      <el-table-column prop="goods_number" label="商品数量" width="150" />
+      <el-table-column prop="email" label="更新时间" width="150">
         <template #default="scope">
           {{ formatTimeStamp(scope.row.upd_time * 1000) }}
         </template>
@@ -29,8 +30,15 @@
       <el-table-column label="操作">
         <template #default="scope">
           <div class="control">
-            <el-link type="primary" :icon="EditPen" :underline="false">编辑</el-link>
-            <el-link type="danger" :icon="Delete" :underline="false"> 删除 </el-link>
+            <!-- <el-link type="primary" :icon="EditPen" :underline="false">编辑</el-link> -->
+            <el-link
+              type="danger"
+              :icon="Delete"
+              :underline="false"
+              @click="deleteGoods(scope.row.goods_id)"
+            >
+              删除
+            </el-link>
           </div>
         </template>
       </el-table-column>
@@ -39,7 +47,7 @@
     <el-pagination
       v-model:currentPage="pageNum"
       v-model:page-size="pageSize"
-      :page-sizes="[10, 15, 20]"
+      :page-sizes="[15, 30, 50, 100]"
       layout="total, sizes, prev, pager, next"
       :total="total"
       @size-change="handleSizeChange"
@@ -56,19 +64,54 @@ export default { name: 'Goods' }
 import { goodsStore } from '@/store/goods'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from '@vue/runtime-core'
-import { formatTimeStamp } from '../../../utils/formatTimeStamp'
+import { formatTimeStamp } from '@/utils/formatTimeStamp'
 import { Search, Refresh, EditPen, Delete } from '@element-plus/icons-vue'
+import { ElMessageBox } from 'element-plus'
 const store = goodsStore()
 const { goods, total } = storeToRefs(store)
-const pageSize = ref(10) //每页显示条数
-const pageNum = ref(1) //当前页码
-const goosId = ref('')
+let pageSize = ref(15) //每页显示条数
+let pageNum = ref(1) //当前页码
+let query = ref('')
 //每页显示条数改变触发
-const handleSizeChange = (newPageSize: number) => {}
+const handleSizeChange = (newPageSize: number) => {
+  store.getGoodsList({ pagenum: pageNum.value, pagesize: newPageSize })
+  pageSize.value = newPageSize
+}
 //页码改变触发
-const handleCurrentChange = (newPageNum: number) => {}
+const handleCurrentChange = (newPageNum: number) => {
+  store.getGoodsList({ pagenum: newPageNum, pagesize: pageSize.value })
+  pageNum.value = newPageNum
+}
+//查询商品
+const searchGoods = () => {
+  if (query.value === '') {
+    store.getGoodsList({ pagenum: 1, pagesize: 15 })
+    pageSize.value = 15
+    pageNum.value = 1
+  }
+  store.getGoodsList({ pagenum: 1, pagesize: 15, query: query.value })
+}
+//重置
+const reset = () => {
+  query.value = ''
+  store.getGoodsList({ pagenum: 1, pagesize: 15 })
+  pageSize.value = 15
+  pageNum.value = 1
+}
+const deleteGoods = (id: number) => {
+  ElMessageBox.confirm(`确认删除该商品吗`, '删除商品', {
+    confirmButtonText: 'OK',
+    cancelButtonText: 'Cancel',
+    type: 'warning'
+  }).then(() => {
+    store.deleteGoods(id)
+    setTimeout(() => {
+      store.getGoodsList({ pagenum: pageNum.value, pagesize: pageSize.value })
+    }, 100)
+  })
+}
 onMounted(() => {
-  store.getGoodsList({ pagenum: 1, pagesize: 10 })
+  store.getGoodsList({ pagenum: 1, pagesize: 15 })
 })
 </script>
 <style scoped lang="less">

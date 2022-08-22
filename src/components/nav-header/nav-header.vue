@@ -18,7 +18,17 @@
       <el-breadcrumb-item>promotion list</el-breadcrumb-item>
       <el-breadcrumb-item>promotion detail</el-breadcrumb-item>
     </el-breadcrumb> -->
-    <el-button @click="outLogin" class="outlogin-btn">退出登录</el-button>
+    <!-- <el-button @click="outLogin" class="outlogin-btn">退出登录</el-button> -->
+    <el-dropdown>
+      <span class="el-dropdown-link">
+        <img src="@/assets/img/tx.png" alt="" class="avatar" />
+      </span>
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item @click="outLogin">退出登录</el-dropdown-item>
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
   </div>
 </template>
 
@@ -49,16 +59,18 @@ const outLogin = () => {
 .nav-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   position: relative;
+  height: 100%;
   .fold {
     margin-right: 10px;
-    margin-top: 15px;
     cursor: pointer;
   }
-  .outlogin-btn {
-    position: absolute;
-    right: 10px;
-    top: 15px;
+  .avatar {
+    margin-right: 40px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
   }
 }
 </style>

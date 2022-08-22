@@ -28,7 +28,13 @@
             >
               删除
             </el-link>
-            <el-link type="warning" :icon="Setting" :underline="false">分配权限</el-link>
+            <el-link
+              type="warning"
+              :icon="Setting"
+              :underline="false"
+              @click="getRights(scope.row, scope.row.id)"
+              >分配权限</el-link
+            >
           </div>
         </template>
       </el-table-column>
@@ -68,6 +74,31 @@
       </span>
     </template>
   </el-dialog>
+  <!-- 分配权限对话框 -->
+  <el-dialog
+    v-model="assignRightsdialogVisible"
+    title="分配权限"
+    width="30%"
+    @close="assignRightsDialogClose"
+    destroy-on-close
+  >
+    <el-tree
+      :data="rightsTree"
+      :props="rightsTreeProps"
+      show-checkbox
+      node-key="id"
+      default-expand-all
+      :default-checked-keys="defaultkeys"
+      ref="treeRef"
+    ></el-tree>
+
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="assignRightsdialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="assignRight">确认</el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script lang="ts">
@@ -80,15 +111,23 @@ import { storeToRefs } from 'pinia'
 import { onMounted, reactive, ref } from 'vue'
 import { ElMessageBox } from 'element-plus'
 const store = roleStore()
-const { roles } = storeToRefs(store)
+const { roles, rightsTree } = storeToRefs(store)
 let editRoledialogVisible = ref(false)
 let addRoledialogVisible = ref(false)
+let assignRightsdialogVisible = ref(false)
 const editRoleFormRef = ref()
+const treeRef = ref()
+let roleId = ref(0)
 const editRoleform = reactive({
   id: -1,
   roleName: '',
   roleDesc: ''
 })
+const rightsTreeProps = reactive({
+  children: 'children',
+  label: 'authName'
+})
+const defaultkeys = reactive([])
 const editRoleRules = reactive({
   roleName: [
     { required: true, message: '请输入角色名称', trigger: 'blur' },
@@ -148,6 +187,32 @@ const addRole = () => {
     }
   })
   addRoledialogVisible.value = false
+}
+//点击分配权限按钮获得节点id
+const getRights = (node: any, id: number) => {
+  getChildKeys(node, defaultkeys)
+  roleId.value = id
+  assignRightsdialogVisible.value = true
+}
+//点击确认分配权限
+const assignRight = () => {
+  const keys = [...treeRef.value.getCheckedKeys(), ...treeRef.value.getHalfCheckedKeys()]
+  store.assignRoleRights({ id: roleId.value, rights: keys.join(',') })
+  assignRightsdialogVisible.value = false
+  console.log(keys)
+}
+//分配权限对话框关闭
+const assignRightsDialogClose = () => {
+  defaultkeys.splice(0)
+}
+//获得所有子节点
+const getChildKeys = (node: any, arr: any[]) => {
+  if (!node.children) {
+    return arr.push(node.id)
+  }
+  node.children.forEach((item: any) => {
+    getChildKeys(item, arr)
+  })
 }
 onMounted(() => {
   store.getRoles()

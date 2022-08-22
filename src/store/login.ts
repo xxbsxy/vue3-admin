@@ -11,7 +11,7 @@ export const loginStore = defineStore('login', {
   state: () => {
     return {
       profile: {},
-      menus:[],
+      menus:[] as any[],
       isCollapse:false
     }
   },

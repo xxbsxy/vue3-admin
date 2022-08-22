@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
-import { getUsers ,getUsersFromId,addUser,deleteUsersFromId,editUsersFromId,changeUserStatus} from '@/api/user'
+import { getUsers ,getUsersFromId,addUser,deleteUsersFromId,editUsersFromId,changeUserStatus,assignUserRole} from '@/api/user'
+import { getRoles} from '@/api/roles'
 import { ElMessage } from 'element-plus'
 interface userList {
   query?:string,
@@ -21,12 +22,17 @@ interface userStatus {
   uid:number
   type:boolean
 }
+interface assignRole {
+  id:number,
+  rid:number
+}
 export const userStore = defineStore('user', {
   persist: true,
   state: () => {
     return {
       users:[] as any[],
-      total:-1
+      total:-1,
+      roles:[] as any[]
     }
   },
   actions: {
@@ -34,12 +40,13 @@ export const userStore = defineStore('user', {
       const res: any = await getUsers(value)
       if(res.meta.status === 200){
 				 ElMessage.success('获取用户列表成功')
-         this.users = res.data.users;
+         this.users = res.data.users
          this.total = res.data.total
+         const res1: any = await getRoles()
+         this.roles = res1.data
       }else {
 				ElMessage.error('获取用户列表成功失败')
       }
-
     },
     async getUsersFromId(id:number) {
       const res: any = await getUsersFromId(id)
@@ -80,11 +87,19 @@ export const userStore = defineStore('user', {
     },
     async changeUserStatus(data:userStatus){
       const res:any = await changeUserStatus(data.uid,data.type)
-      if(res.meta.status === 200){
+      if(res.meta.status === 200) {
         ElMessage.success('更新状态成功')
      }else {
         ElMessage.error('更新状态失败')
      }
+    },
+    async assignUserRole(data:assignRole) {
+      const res:any = await assignUserRole(data.id,data.rid)
+      if(res.meta.status === 200) {
+        ElMessage.success('更新角色成功')
+      }else {
+        ElMessage.error('更新角色失败')
+       }
     }
   }
 })

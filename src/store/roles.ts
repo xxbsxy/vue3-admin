@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
-import { getRoles,editRoles,deleteRoles ,addRoles} from '@/api/roles'
+import { getRoles,editRoles,deleteRoles ,addRoles,assignRoleRights} from '@/api/roles'
+import { getRightsTree} from '@/api/rights'
+
 import { ElMessage } from 'element-plus'
 
 interface changeRole {
@@ -11,11 +13,16 @@ interface addRole {
   roleName:string,
   roleDesc?:string
 }
+interface assignRights{
+  id:number,
+  rights:string
+}
 export const roleStore = defineStore('role', {
   persist: true,
   state: () => {
     return {
-      roles:[]
+      roles:[],
+      rightsTree:[] as any[]
     }
   },
   actions: {
@@ -27,6 +34,9 @@ export const roleStore = defineStore('role', {
      }else {
        ElMessage.error('获取角色列表失败')
      }
+     const res1:any = await getRightsTree()
+     this.rightsTree = res1.data
+
     },
     async editRoles(data:changeRole){
       const res:any = await editRoles(data.id,data.roleName,data.roleDesc)
@@ -54,6 +64,16 @@ export const roleStore = defineStore('role', {
      }else {
        ElMessage.error('添加角色失败')
      }
+    },
+    async assignRoleRights(data:assignRights){
+      const res:any = await assignRoleRights(data.id,data.rights)
+      if(res.meta.status === 200){
+        ElMessage.success('分配角色成功')
+        this.getRoles()
+     }else {
+       ElMessage.error('分配角色失败')
+     }
+
     }
   }
 })

@@ -4,7 +4,7 @@
     <span class="title" v-show="!isCollapse">Vue3-Admin</span>
   </div>
   <el-menu
-    default-active="2"
+    :default-active="route.path"
     class="el-menu-vertical-demo"
     active-text-color="#fff"
     background-color="#00162a"
@@ -13,7 +13,16 @@
     router
     :collapse-transition="false"
   >
-    <el-sub-menu v-for="item in menus" :index="item.id + ''" :key="item.id">
+    <el-menu-item-group>
+      <el-menu-item index="/main/home" route="/main/home">
+        <HomeFilled style="width: 1em; height: 1em; margin-right: 8px" />首页
+      </el-menu-item>
+    </el-menu-item-group>
+    <el-sub-menu
+      v-for="item in menus.slice(0, menus.length - 1)"
+      :index="item.id + ''"
+      :key="item.id"
+    >
       <template #title>
         <UserFilled
           style="width: 1em; height: 1em; margin-right: 8px"
@@ -31,17 +40,15 @@
           style="width: 1em; height: 1em; margin-right: 8px"
           v-else-if="item.authName === '权限管理'"
         />
-
-        <TrendCharts
-          style="width: 1em; height: 1em; margin-right: 8px"
-          v-else-if="item.authName === '数据统计'"
-        />
         <span>{{ item.authName }}</span>
       </template>
       <el-menu-item-group>
-        <el-menu-item v-for="child in item.children" :key="child.id" :index="child.path">
-          <!-- <Menu style="width: 1em; height: 1em; margin-right: 8px" />  -->
-          {{ child.authName }}
+        <el-menu-item
+          v-for="child in item.children"
+          :key="child.id"
+          :index="`/main/${child.path}`"
+          :route="`/main/${child.path}`"
+          >{{ child.authName }}
         </el-menu-item>
       </el-menu-item-group>
     </el-sub-menu>
@@ -52,11 +59,11 @@
 export default { name: 'App' }
 </script>
 <script setup lang="ts">
-import { UserFilled, Goods, DocumentCopy, Box, TrendCharts, Menu } from '@element-plus/icons-vue'
+import { UserFilled, Goods, DocumentCopy, Box, HomeFilled } from '@element-plus/icons-vue'
 import { loginStore } from '@/store/login'
 import { storeToRefs } from 'pinia'
-import { useRouter } from 'vue-router'
-const router = useRouter()
+import { useRoute } from 'vue-router'
+const route = useRoute()
 const store = loginStore()
 const { menus, isCollapse } = storeToRefs(store)
 </script>

@@ -31,3 +31,13 @@ export function addRoles(roleName:string,roleDesc?:string) {
     }
   })
 }
+
+export function assignRoleRights(roleId:number,rids:string) {
+  return myRequest.request({
+    url: `roles/${roleId}/rights`,
+    method:'post',
+    data:{
+      rids
+    }
+  })
+}

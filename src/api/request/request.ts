@@ -1,12 +1,12 @@
 import axios from 'axios'
 import type { AxiosInstance } from 'axios'
 import type { myRequestInterceptors, myRequestConfig } from './type'
-import { ElLoading } from 'element-plus'
-import { LoadingInstance } from 'element-plus/lib/components/loading/src/loading'
+// import { ElLoading } from 'element-plus'
+// import { LoadingInstance } from 'element-plus/lib/components/loading/src/loading'
 class Request {
   instance: AxiosInstance
   interceptors?: myRequestInterceptors
-  loading?: LoadingInstance
+  // loading?: LoadingInstance
   constructor(config: myRequestConfig) {
     this.instance = axios.create(config)
     this.interceptors = config.interceptors
@@ -20,20 +20,21 @@ class Request {
     )
     this.instance.interceptors.request.use(
       (config) => {
-        this.loading = ElLoading.service({
-          lock: true,
-          text: '正在请求数据...',
-          background: 'rgba(0, 0 ,0, 0.2)'
-        })
+        // this.loading = ElLoading.service({
+        //   lock: true,
+        //   text: '正在请求数据...',
+        //   background: 'rgba(0, 0 ,0, 0.2)'
+        // })
         return config
       },
+
       (err) => {
         return err
       }
     )
     this.instance.interceptors.response.use(
       (res) => {
-        this.loading?.close()
+        // this.loading?.close()
         return res
       },
       (err) => {
