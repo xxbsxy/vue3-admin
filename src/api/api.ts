@@ -1,8 +1,7 @@
 import Request from './request/request'
 import LocalCache from '../utils/cache'
 const myRequest = new Request({
-  // baseURL: '/api',
-  baseURL: 'http://43.142.179.253:8889/api/private/v1',
+  baseURL: 'http://43.143.0.76:8889/api/private/v1',
   timeout: 5000,
   interceptors: {
     requestInterceptor: (config: any) => {

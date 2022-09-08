@@ -28,9 +28,6 @@ export const ordersStore = defineStore('orders', {
     },
     async editOrders(data:editOrder) {
      const res:any = await editOrders(data.id,data.order_price,data.is_send,data.order_pay)
-     console.log(data);
-
-     console.log(res);
      if(res.meta.status === 201){
       ElMessage.success('更新订单成功')
     }else {

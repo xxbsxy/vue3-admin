@@ -11,15 +11,14 @@ export const goodsStore = defineStore('goods', {
   state: () => {
     return {
       goods:[] as any[],
-      total:0
+      total:0,
+      loading:false
     }
   },
   actions: {
     async getGoodsList(data:goodList) {
+      this.loading = true
       const res:any = await getGoodsList(data.pagenum,data.pagesize,data.query)
-      const res1 = await textGoods(925)
-      console.log(res1);
-
       if(res.meta.status === 200) {
         ElMessage.success('获取商品列表成功')
        this.goods = res.data.goods
@@ -27,6 +26,7 @@ export const goodsStore = defineStore('goods', {
      }else {
        ElMessage.error('获取商品列表失败')
      }
+     this.loading = false
     },
     async searchGoods(id:number) {
       const res:any = await searchGoods(id)

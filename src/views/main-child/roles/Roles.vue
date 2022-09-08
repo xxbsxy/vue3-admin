@@ -1,104 +1,111 @@
 <template>
-  <el-card>
-    <div class="roles-list">
-      角色列表
-      <el-button type="primary" class="add-btn" @click="addRoledialogVisible = true">
-        添加角色
-      </el-button>
-    </div>
-    <el-table :data="roles" stripe style="width: 100%" border>
-      <el-table-column type="index" width="60" label="序号" />
-      <el-table-column prop="roleName" label="角色名称" />
-      <el-table-column prop="roleDesc" label="角色描述" />
-      <el-table-column label="操作">
-        <template #default="scope">
-          <div class="control">
-            <el-link
-              type="primary"
-              :icon="EditPen"
-              :underline="false"
-              @click="getRole(scope.row.roleName, scope.row.roleDesc, scope.row.id)"
-              >编辑</el-link
-            >
-            <el-link
-              type="danger"
-              :icon="Delete"
-              :underline="false"
-              @click="deleteRoles(scope.row.id, scope.row.roleName)"
-            >
-              删除
-            </el-link>
-            <el-link
-              type="warning"
-              :icon="Setting"
-              :underline="false"
-              @click="getRights(scope.row, scope.row.id)"
-              >分配权限</el-link
-            >
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
-  </el-card>
-  <!-- 添加角色对话框 -->
-  <el-dialog v-model="addRoledialogVisible" title="编辑用户" width="30%">
-    <el-form :model="addRoleform" label-width="80px" :rules="addRoleRules" ref="addRoleFormRef">
-      <el-form-item label="角色名称" prop="roleName">
-        <el-input v-model="addRoleform.roleName" />
-      </el-form-item>
-      <el-form-item label="角色描述" prop="roleDesc">
-        <el-input v-model="addRoleform.roleDesc" />
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="addRoledialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="addRole">确认</el-button>
-      </span>
-    </template>
-  </el-dialog>
-  <!-- 编辑角色对话框 -->
-  <el-dialog v-model="editRoledialogVisible" title="编辑用户" width="30%">
-    <el-form :model="editRoleform" label-width="80px" :rules="editRoleRules" ref="editRoleFormRef">
-      <el-form-item label="角色名称" prop="roleName">
-        <el-input v-model="editRoleform.roleName" />
-      </el-form-item>
-      <el-form-item label="角色描述" prop="roleDesc">
-        <el-input v-model="editRoleform.roleDesc" />
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="editRoledialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="editRole">确认</el-button>
-      </span>
-    </template>
-  </el-dialog>
-  <!-- 分配权限对话框 -->
-  <el-dialog
-    v-model="assignRightsdialogVisible"
-    title="分配权限"
-    width="30%"
-    @close="assignRightsDialogClose"
-    destroy-on-close
-  >
-    <el-tree
-      :data="rightsTree"
-      :props="rightsTreeProps"
-      show-checkbox
-      node-key="id"
-      default-expand-all
-      :default-checked-keys="defaultkeys"
-      ref="treeRef"
-    ></el-tree>
+  <div class="roles">
+    <el-card>
+      <div class="roles-list">
+        角色列表
+        <el-button type="primary" class="add-btn" @click="addRoledialogVisible = true">
+          添加角色
+        </el-button>
+      </div>
+      <el-table :data="roles" stripe style="width: 100%" border>
+        <el-table-column type="index" width="60" label="序号" />
+        <el-table-column prop="roleName" label="角色名称" />
+        <el-table-column prop="roleDesc" label="角色描述" />
+        <el-table-column label="操作">
+          <template #default="scope">
+            <div class="control">
+              <el-link
+                type="primary"
+                :icon="EditPen"
+                :underline="false"
+                @click="getRole(scope.row.roleName, scope.row.roleDesc, scope.row.id)"
+                >编辑</el-link
+              >
+              <el-link
+                type="danger"
+                :icon="Delete"
+                :underline="false"
+                @click="deleteRoles(scope.row.id, scope.row.roleName)"
+              >
+                删除
+              </el-link>
+              <el-link
+                type="warning"
+                :icon="Setting"
+                :underline="false"
+                @click="getRights(scope.row, scope.row.id)"
+                >分配权限</el-link
+              >
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
+    <!-- 添加角色对话框 -->
+    <el-dialog v-model="addRoledialogVisible" title="编辑用户" width="30%">
+      <el-form :model="addRoleform" label-width="80px" :rules="addRoleRules" ref="addRoleFormRef">
+        <el-form-item label="角色名称" prop="roleName">
+          <el-input v-model="addRoleform.roleName" />
+        </el-form-item>
+        <el-form-item label="角色描述" prop="roleDesc">
+          <el-input v-model="addRoleform.roleDesc" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="addRoledialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="addRole">确认</el-button>
+        </span>
+      </template>
+    </el-dialog>
+    <!-- 编辑角色对话框 -->
+    <el-dialog v-model="editRoledialogVisible" title="编辑用户" width="30%">
+      <el-form
+        :model="editRoleform"
+        label-width="80px"
+        :rules="editRoleRules"
+        ref="editRoleFormRef"
+      >
+        <el-form-item label="角色名称" prop="roleName">
+          <el-input v-model="editRoleform.roleName" />
+        </el-form-item>
+        <el-form-item label="角色描述" prop="roleDesc">
+          <el-input v-model="editRoleform.roleDesc" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="editRoledialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="editRole">确认</el-button>
+        </span>
+      </template>
+    </el-dialog>
+    <!-- 分配权限对话框 -->
+    <el-dialog
+      v-model="assignRightsdialogVisible"
+      title="分配权限"
+      width="30%"
+      @close="assignRightsDialogClose"
+      destroy-on-close
+    >
+      <el-tree
+        :data="rightsTree"
+        :props="rightsTreeProps"
+        show-checkbox
+        node-key="id"
+        default-expand-all
+        :default-checked-keys="defaultkeys"
+        ref="treeRef"
+      ></el-tree>
 
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="assignRightsdialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="assignRight">确认</el-button>
-      </span>
-    </template>
-  </el-dialog>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="assignRightsdialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="assignRight">确认</el-button>
+        </span>
+      </template>
+    </el-dialog>
+  </div>
 </template>
 
 <script lang="ts">
@@ -110,57 +117,26 @@ import { roleStore } from '@/store/roles'
 import { storeToRefs } from 'pinia'
 import { onMounted, reactive, ref } from 'vue'
 import { ElMessageBox } from 'element-plus'
+import { useEditRole } from './hooks/useEditRole'
+import { useAddRole } from './hooks/useAddRole'
+import { useAssignRight } from './hooks/useAssignRight'
 const store = roleStore()
 const { roles, rightsTree } = storeToRefs(store)
-let editRoledialogVisible = ref(false)
-let addRoledialogVisible = ref(false)
-let assignRightsdialogVisible = ref(false)
-const editRoleFormRef = ref()
-const treeRef = ref()
-let roleId = ref(0)
-const editRoleform = reactive({
-  id: -1,
-  roleName: '',
-  roleDesc: ''
-})
-const rightsTreeProps = reactive({
-  children: 'children',
-  label: 'authName'
-})
-const defaultkeys = reactive([])
-const editRoleRules = reactive({
-  roleName: [
-    { required: true, message: '请输入角色名称', trigger: 'blur' },
-    { min: 3, max: 10, message: '角色名称必须在3到10位之间', trigger: 'blur' }
-  ],
-  roleDesc: [
-    { required: true, message: '请输入角色描述', trigger: 'blur' },
-    { min: 4, max: 15, message: '角色描述必须在4到15位之间', trigger: 'blur' }
-  ]
-})
-const addRoleFormRef = ref()
-const addRoleform = reactive({
-  roleName: '',
-  roleDesc: ''
-})
-const addRoleRules = reactive({
-  roleName: [
-    { required: true, message: '请输入角色名称', trigger: 'blur' },
-    { min: 3, max: 10, message: '角色名称必须在3到10位之间', trigger: 'blur' }
-  ],
-  roleDesc: [
-    { required: true, message: '请输入角色描述', trigger: 'blur' },
-    { min: 4, max: 15, message: '角色描述必须在4到15位之间', trigger: 'blur' }
-  ]
-})
-//点击编辑获取用户信息
-const getRole = (roleName: string, roleDesc: string, id: number) => {
-  editRoleform.roleName = roleName
-  editRoleform.roleDesc = roleDesc
-  editRoleform.id = id
-  editRoledialogVisible.value = true
-}
-//删除jues
+const { editRoledialogVisible, editRoleFormRef, editRoleform, editRoleRules, getRole, editRole } =
+  useEditRole() //编辑用户
+const { addRoledialogVisible, addRoleFormRef, addRoleform, addRoleRules, addRole } = useAddRole() //添加用户
+const {
+  roleId,
+  assignRightsdialogVisible,
+  treeRef,
+  defaultkeys,
+  rightsTreeProps,
+  getRights,
+  assignRight,
+  assignRightsDialogClose
+} = useAssignRight() //分配权限
+
+//删除用户
 const deleteRoles = (id: number, username: string) => {
   ElMessageBox.confirm(`确认删除用户${username}吗`, '删除用户', {
     confirmButtonText: 'OK',
@@ -168,50 +144,6 @@ const deleteRoles = (id: number, username: string) => {
     type: 'warning'
   }).then(() => {
     store.deleteRoles(id)
-  })
-}
-//点击确认修改角色信息
-const editRole = () => {
-  editRoleFormRef.value.validate((isValidate: boolean) => {
-    if (isValidate) {
-      store.editRoles(editRoleform)
-    }
-  })
-  editRoledialogVisible.value = false
-}
-//点击添加角色
-const addRole = () => {
-  addRoleFormRef.value.validate((isValidate: boolean) => {
-    if (isValidate) {
-      store.addRoles(addRoleform)
-    }
-  })
-  addRoledialogVisible.value = false
-}
-//点击分配权限按钮获得节点id
-const getRights = (node: any, id: number) => {
-  getChildKeys(node, defaultkeys)
-  roleId.value = id
-  assignRightsdialogVisible.value = true
-}
-//点击确认分配权限
-const assignRight = () => {
-  const keys = [...treeRef.value.getCheckedKeys(), ...treeRef.value.getHalfCheckedKeys()]
-  store.assignRoleRights({ id: roleId.value, rights: keys.join(',') })
-  assignRightsdialogVisible.value = false
-  console.log(keys)
-}
-//分配权限对话框关闭
-const assignRightsDialogClose = () => {
-  defaultkeys.splice(0)
-}
-//获得所有子节点
-const getChildKeys = (node: any, arr: any[]) => {
-  if (!node.children) {
-    return arr.push(node.id)
-  }
-  node.children.forEach((item: any) => {
-    getChildKeys(item, arr)
   })
 }
 onMounted(() => {
@@ -225,7 +157,6 @@ onMounted(() => {
 .pagination {
   margin-top: 20px;
 }
-
 .roles-list {
   position: relative;
   height: 40px;

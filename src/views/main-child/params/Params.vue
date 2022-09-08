@@ -1,4 +1,6 @@
-<template></template>
+<template>
+  <div class="params"></div>
+</template>
 
 <script lang="ts">
 export default { name: 'Params' }

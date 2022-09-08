@@ -12,7 +12,9 @@ export const loginStore = defineStore('login', {
     return {
       profile: {},
       menus:[] as any[],
-      isCollapse:false
+      isCollapse:false,
+      tabList:[] as any[],
+      activeName:'后台首页'
     }
   },
   actions: {

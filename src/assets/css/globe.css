@@ -10,3 +10,23 @@ body, html ,#app{
 .el-menu-item.is-active {
   background-color: #0a61bc !important;
 }
+::-webkit-scrollbar{
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-corner{
+  display: block;
+}
+::-webkit-scrollbar-thumb{
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-track{
+  border-right-color: transparent;
+  border-left-color: transparent;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.el-tree-node__content{
+  padding: 7px 0;
+}

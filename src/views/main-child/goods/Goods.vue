@@ -1,60 +1,57 @@
 <template>
-  <el-card>
-    <!-- 查询 -->
-    <el-row :gutter="20" class="search-area">
-      <el-col :span="6">
-        <el-form-item>
-          <el-input placeholder="请输入商品名称" width="200px" v-model.number="query" />
-        </el-form-item>
-      </el-col>
-      <el-col :span="6">
-        <el-button type="primary" :icon="Search" @click="searchGoods">查询</el-button>
-        <el-button :icon="Refresh" @click="reset">重置</el-button>
-      </el-col>
-    </el-row>
-    <!-- 商品列表 -->
-    <div class="goods-list">
-      商品列表
-      <el-button type="primary" class="add-btn"> 添加商品 </el-button>
-    </div>
-    <el-table :data="goods" stripe style="width: 100%" border>
-      <el-table-column type="index" width="60" label="序号" />
-      <el-table-column prop="goods_name" label="商品名称" width="700px" />
-      <el-table-column prop="goods_price" label="商品价格" width="150" />
-      <el-table-column prop="goods_number" label="商品数量" width="150" />
-      <el-table-column prop="email" label="更新时间" width="150">
-        <template #default="scope">
-          {{ formatTimeStamp(scope.row.upd_time * 1000) }}
-        </template>
-      </el-table-column>
-      <el-table-column label="操作">
-        <template #default="scope">
-          <div class="control">
-            <!-- <el-link type="primary" :icon="EditPen" :underline="false">编辑</el-link> -->
-            <el-link
-              type="danger"
-              :icon="Delete"
-              :underline="false"
-              @click="deleteGoods(scope.row.goods_id)"
-            >
-              删除
-            </el-link>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!-- 分页 -->
-    <el-pagination
-      v-model:currentPage="pageNum"
-      v-model:page-size="pageSize"
-      :page-sizes="[15, 30, 50, 100]"
-      layout="total, sizes, prev, pager, next"
-      :total="total"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      class="pagination"
-    />
-  </el-card>
+  <div class="goods" v-loading="loading">
+    <el-card>
+      <!-- 查询 -->
+      <el-row :gutter="20" class="search-area">
+        <el-col :span="6">
+          <el-form-item>
+            <el-input placeholder="请输入商品名称" width="200px" v-model.number="query" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-button type="primary" :icon="Search" @click="searchGoods">查询</el-button>
+          <el-button :icon="Refresh" @click="reset">重置</el-button>
+        </el-col>
+      </el-row>
+      <!-- 商品列表 -->
+      <div class="goods-list">
+        商品列表
+        <el-button type="primary" class="add-btn"> 添加商品 </el-button>
+      </div>
+      <el-table :data="goods" stripe style="width: 100%" border>
+        <el-table-column type="index" width="60" label="序号" />
+        <el-table-column prop="goods_name" label="商品名称" width="700px" />
+        <el-table-column prop="goods_price" label="商品价格" />
+        <el-table-column prop="goods_number" label="商品数量" />
+        <el-table-column label="操作" width="200">
+          <template #default="scope">
+            <div class="control">
+              <!-- <el-link type="primary" :icon="EditPen" :underline="false">编辑</el-link> -->
+              <el-link
+                type="danger"
+                :icon="Delete"
+                :underline="false"
+                @click="deleteGoods(scope.row.goods_id)"
+              >
+                删除
+              </el-link>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!-- 分页 -->
+      <el-pagination
+        v-model:currentPage="pageNum"
+        v-model:page-size="pageSize"
+        :page-sizes="[15, 30, 50, 100]"
+        layout="total, sizes, prev, pager, next"
+        :total="total"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        class="pagination"
+      />
+    </el-card>
+  </div>
 </template>
 
 <script lang="ts">
@@ -68,7 +65,7 @@ import { formatTimeStamp } from '@/utils/formatTimeStamp'
 import { Search, Refresh, EditPen, Delete } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
 const store = goodsStore()
-const { goods, total } = storeToRefs(store)
+const { goods, total, loading } = storeToRefs(store)
 let pageSize = ref(15) //每页显示条数
 let pageNum = ref(1) //当前页码
 let query = ref('')

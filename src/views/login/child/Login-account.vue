@@ -59,7 +59,7 @@ const loginAction = (isKeepPassword: boolean) => {
       }
       store.loginAction({ ...formAccount }).then(() => {
         router.push({
-          path: '/main'
+          path: '/home'
         })
       })
     }

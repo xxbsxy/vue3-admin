@@ -1,6 +1,6 @@
 <template>
   <div class="logo">
-    <img src="../../assets/img/logo.svg" alt="" />
+    <img src="@/assets/img/logo.svg" alt="" />
     <span class="title" v-show="!isCollapse">Vue3-Admin</span>
   </div>
   <el-menu
@@ -13,11 +13,15 @@
     router
     :collapse-transition="false"
   >
-    <el-menu-item-group>
-      <el-menu-item index="/main/home" route="/main/home">
-        <HomeFilled style="width: 1em; height: 1em; margin-right: 8px" />首页
-      </el-menu-item>
-    </el-menu-item-group>
+    <el-sub-menu index="/">
+      <template #title>
+        <HomeFilled style="width: 1em; height: 1em; margin-right: 8px" />
+        <span>后台首页</span>
+      </template>
+      <el-menu-item-group>
+        <el-menu-item index="/home"> 首页 </el-menu-item>
+      </el-menu-item-group>
+    </el-sub-menu>
     <el-sub-menu
       v-for="item in menus.slice(0, menus.length - 1)"
       :index="item.id + ''"
@@ -43,11 +47,7 @@
         <span>{{ item.authName }}</span>
       </template>
       <el-menu-item-group>
-        <el-menu-item
-          v-for="child in item.children"
-          :key="child.id"
-          :index="`/main/${child.path}`"
-          :route="`/main/${child.path}`"
+        <el-menu-item v-for="child in item.children" :key="child.id" :index="'/' + child.path"
           >{{ child.authName }}
         </el-menu-item>
       </el-menu-item-group>
@@ -66,6 +66,7 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 const store = loginStore()
 const { menus, isCollapse } = storeToRefs(store)
+console.log(route.path)
 </script>
 <style scoped lang="less">
 .logo {

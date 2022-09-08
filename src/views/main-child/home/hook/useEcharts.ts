@@ -1,4 +1,30 @@
-import * as echarts from 'echarts'
+import * as echarts from 'echarts/core';
+import {
+  TitleComponent,
+  ToolboxComponent,
+  TooltipComponent,
+  LegendComponent
+} from 'echarts/components';
+import { PieChart } from 'echarts/charts';
+import { LabelLayout } from 'echarts/features';
+import { CanvasRenderer } from 'echarts/renderers';
+import { GridComponent } from 'echarts/components';
+import { BarChart } from 'echarts/charts';
+import { LineChart } from 'echarts/charts';
+import { UniversalTransition } from 'echarts/features';
+echarts.use([
+  TitleComponent,
+  ToolboxComponent,
+  TooltipComponent,
+  LegendComponent,
+  PieChart,
+  LabelLayout,
+  GridComponent,
+  BarChart,
+  LineChart,
+  CanvasRenderer,
+  UniversalTransition
+]);
 export function init() {
   // 基于准备好的dom，初始化echarts实例
   var myChart = echarts.init(document.getElementById('main') as HTMLElement)
@@ -55,7 +81,7 @@ export function init() {
 
             show: true,
             formatter: '{b}:({d}%)' //自定义显示格式(b:name, c:value, d:百分比)
-          
+
         },
         title: {
           text: '顾客来源'

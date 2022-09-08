@@ -1,37 +1,39 @@
 <template>
-  <el-row :gutter="30">
-    <el-col :span="6" v-for="item in list" :key="item.num">
-      <el-card class="box-card">
-        <img :src="item.url" />
-        <div class="right-area">
-          <div class="top">{{ item.title }}</div>
-          <div class="buttom">{{ item.num }}</div>
-        </div>
-      </el-card>
-    </el-col>
-  </el-row>
-  <el-row :gutter="30">
-    <el-col :span="6">
-      <el-card class="welcome">
-        <img src="@/assets/img/tx.png" class="avatar" />
-        <h1>欢迎登录</h1>
-      </el-card>
-    </el-col>
-    <el-col :span="18">
-      <el-card id="main"></el-card>
-    </el-col>
-  </el-row>
-  <el-row :gutter="30">
-    <el-col :span="8">
-      <el-card id="pie-left"></el-card>
-    </el-col>
-    <el-col :span="8">
-      <el-card id="pie-middle"></el-card>
-    </el-col>
-    <el-col :span="8">
-      <el-card id="pie-right"></el-card>
-    </el-col>
-  </el-row>
+  <div class="home">
+    <el-row :gutter="30">
+      <el-col :span="6" v-for="item in list" :key="item.num">
+        <el-card class="box-card">
+          <img :src="item.url" />
+          <div class="right-area">
+            <div class="top">{{ item.title }}</div>
+            <div class="buttom">{{ item.num }}</div>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row :gutter="30">
+      <el-col :span="6">
+        <el-card class="welcome">
+          <img src="@/assets/img/tx.png" class="avatar" />
+          <h1>欢迎登录</h1>
+        </el-card>
+      </el-col>
+      <el-col :span="18">
+        <el-card id="main"></el-card>
+      </el-col>
+    </el-row>
+    <el-row :gutter="30">
+      <el-col :span="8">
+        <el-card id="pie-left"></el-card>
+      </el-col>
+      <el-col :span="8">
+        <el-card id="pie-middle"></el-card>
+      </el-col>
+      <el-col :span="8">
+        <el-card id="pie-right"></el-card>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script lang="ts">
