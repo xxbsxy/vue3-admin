@@ -21,16 +21,4 @@ export function deleteGoods(id:number) {
     method:'delete'
   })
 }
-export function textGoods(id:number) {
-  return myRequest.request({
-    url: `/goods/${id}`,
-    method:'put',
-    data:{
-      goods_name:'aaa',
-      goods_price:500,
-      goods_number:200,
-      goods_weight:3000,
-      goods_introduce:'bbb'
-    }
-  })
-}
+

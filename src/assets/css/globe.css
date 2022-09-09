@@ -8,7 +8,7 @@ body, html ,#app{
 }
 
 .el-menu-item.is-active {
-  background-color: #0a61bc !important;
+  background-color: #ecf5ff !important;
 }
 ::-webkit-scrollbar{
   width: 10px;
@@ -29,4 +29,7 @@ body, html ,#app{
 }
 .el-tree-node__content{
   padding: 7px 0;
+}
+.el-col-5 {
+  max-width:20% !important;
 }

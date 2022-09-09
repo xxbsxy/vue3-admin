@@ -126,7 +126,6 @@ const { editRoledialogVisible, editRoleFormRef, editRoleform, editRoleRules, get
   useEditRole() //编辑用户
 const { addRoledialogVisible, addRoleFormRef, addRoleform, addRoleRules, addRole } = useAddRole() //添加用户
 const {
-  roleId,
   assignRightsdialogVisible,
   treeRef,
   defaultkeys,

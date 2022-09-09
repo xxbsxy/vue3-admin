@@ -1,13 +1,13 @@
 <template>
   <el-container class="container">
-    <el-aside :class="!isCollapse ? 'aside' : 'collapse-aside'">
-      <nav-menu></nav-menu>
-    </el-aside>
+    <el-header class="header" :style="{ backgroundColor: headerColor }">
+      <nav-header></nav-header>
+    </el-header>
     <el-container>
-      <el-header class="header">
-        <nav-header></nav-header>
-      </el-header>
-      <el-main class="main">
+      <el-aside :class="!isCollapse ? 'aside' : 'collapse-aside'">
+        <nav-menu></nav-menu>
+      </el-aside>
+      <el-main class="main" :style="{ backgroundColor: mainColor }">
         <tag-list></tag-list>
         <router-view v-slot="{ Component }">
           <transition name="fade">
@@ -31,24 +31,25 @@ import TabList from '@/components/tag-list/tag-list'
 import { loginStore } from '@/store/login'
 import { storeToRefs } from 'pinia'
 const store = loginStore()
-const { isCollapse } = storeToRefs(store)
+const { isCollapse, headerColor, mainColor } = storeToRefs(store)
 </script>
 <style scoped lang="less">
 .container {
   height: 100%;
   .header {
-    background-color: #ffffff;
+    height: 64px;
+    background-color: #4338ca;
+    transition: background-color 0.4s ease-in;
   }
   .aside {
     width: 210px;
-    background-color: #0c2135;
   }
   .collapse-aside {
     width: 64px;
-    background-color: #0c2135;
   }
   .main {
     background-color: #f1f2f6;
+    transition: background-color 0.4s ease-in;
     .fade-enter-active,
     .fade-leave-active {
       transition: opacity 0.2s ease;

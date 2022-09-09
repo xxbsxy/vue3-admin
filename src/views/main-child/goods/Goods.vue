@@ -61,7 +61,6 @@ export default { name: 'Goods' }
 import { goodsStore } from '@/store/goods'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from '@vue/runtime-core'
-import { formatTimeStamp } from '@/utils/formatTimeStamp'
 import { Search, Refresh, EditPen, Delete } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
 const store = goodsStore()

@@ -1,14 +1,7 @@
 <template>
-  <div class="logo">
-    <img src="@/assets/img/logo.svg" alt="" />
-    <span class="title" v-show="!isCollapse">Vue3-Admin</span>
-  </div>
   <el-menu
     :default-active="route.path"
     class="el-menu-vertical-demo"
-    active-text-color="#fff"
-    background-color="#00162a"
-    text-color="#fff"
     :collapse="isCollapse"
     router
     :collapse-transition="false"
@@ -52,6 +45,15 @@
         </el-menu-item>
       </el-menu-item-group>
     </el-sub-menu>
+    <el-sub-menu index="/beautiful">
+      <template #title>
+        <BrushFilled style="width: 1em; height: 1em; margin-right: 8px" />
+        <span>页面美化</span>
+      </template>
+      <el-menu-item-group>
+        <el-menu-item index="/beautiful"> 美化 </el-menu-item>
+      </el-menu-item-group>
+    </el-sub-menu>
   </el-menu>
 </template>
 
@@ -59,7 +61,14 @@
 export default { name: 'App' }
 </script>
 <script setup lang="ts">
-import { UserFilled, Goods, DocumentCopy, Box, HomeFilled } from '@element-plus/icons-vue'
+import {
+  UserFilled,
+  Goods,
+  DocumentCopy,
+  Box,
+  HomeFilled,
+  BrushFilled
+} from '@element-plus/icons-vue'
 import { loginStore } from '@/store/login'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'

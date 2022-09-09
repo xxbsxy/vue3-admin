@@ -98,11 +98,13 @@ const defaultProps = {
   children: 'children',
   label: 'cat_name'
 }
+//删除分类
 const deleteCategories = (id: number) => {
   store.deleteCategories(id).then(() => {
     store.getCategories()
   })
 }
+//编辑分类
 const editCategories = (id: number, name: string) => {
   ElMessageBox.prompt('编辑分类', {
     confirmButtonText: '确认',

@@ -56,13 +56,13 @@ watch(
   (newvalue) => {
     let flag = true
     store.activeName = newvalue.meta.title as string
-    document.title = 'Shop-Admin-' + newvalue.meta.title
+    document.title = 'Vue3-Admin-' + newvalue.meta.title
     tabList.value.forEach((item) => {
       if (item.title === newvalue.meta.title) {
         flag = false
       }
     })
-    if (flag) {
+    if (flag && route.path !== '/login') {
       store.tabList.push({
         title: newvalue.meta.title,
         path: newvalue.path,

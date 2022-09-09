@@ -70,6 +70,13 @@ const routes: Array<RouteRecordRaw> = [
           title:'订单列表'
         }
       },
+      {
+        path: 'beautiful',
+        component: () => import('@/views/main-child/beautiful/Beautiful.vue'),
+        meta:{
+          title:'页面美化'
+        }
+      }
     ]
   },
   {

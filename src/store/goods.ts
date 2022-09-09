@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getGoodsList,searchGoods,deleteGoods,textGoods} from '@/api/goods'
+import { getGoodsList,searchGoods,deleteGoods} from '@/api/goods'
 import { ElMessage } from 'element-plus'
 interface goodList{
   pagesize:number
