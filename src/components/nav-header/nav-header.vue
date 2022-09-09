@@ -47,15 +47,16 @@ import { Fold, Expand, ArrowDown } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { loginStore } from '@/store/login'
 import { storeToRefs } from 'pinia'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import localCache from '../../utils/cache'
-const route = useRoute()
 const router = useRouter()
 const store = loginStore()
 const { isCollapse } = storeToRefs(store)
+//折叠切换
 const changeCollapse = () => {
   store.isCollapse = !isCollapse.value
 }
+//退出登录
 const outLogin = () => {
   ElMessageBox.confirm('是否退出登录?', 'Warning', {
     confirmButtonText: '确定',

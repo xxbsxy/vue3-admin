@@ -50,10 +50,12 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const store = loginStore()
 const loginFormRef = ref<InstanceType<typeof ElForm>>()
+//登录表单
 const loginForm = reactive({
   username: 'admin',
   password: '123456'
 })
+//登录表单规则
 const loginRules = reactive<FormRules>({
   username: [
     { required: true, message: '请输入账号', trigger: 'blur' },

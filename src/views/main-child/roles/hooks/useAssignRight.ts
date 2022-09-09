@@ -2,10 +2,11 @@ import { reactive, ref } from 'vue'
 import { roleStore } from '@/store/roles'
 export function useAssignRight() {
   const store = roleStore()
-  let roleId = ref(0)
-  let assignRightsdialogVisible = ref(false)
-  const treeRef = ref()
-  const defaultkeys = reactive([])
+  let roleId = ref(0) //角色id
+  let assignRightsdialogVisible = ref(false) //控制分配权限对话框的显示
+  const treeRef = ref() //树结构的ref
+  const defaultkeys = reactive([]) //默认展开的节点
+  //树结构配置
   const rightsTreeProps = reactive({
     children: 'children',
     label: 'authName'

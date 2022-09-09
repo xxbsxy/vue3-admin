@@ -33,3 +33,6 @@ body, html ,#app{
 .el-col-5 {
   max-width:20% !important;
 }
+.ql-container {
+  height: 180px !important;
+}

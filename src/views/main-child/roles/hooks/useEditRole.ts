@@ -2,13 +2,15 @@ import {  reactive, ref } from 'vue'
 import { roleStore } from '@/store/roles'
 export function useEditRole() {
   const store = roleStore()
-  let editRoledialogVisible = ref(false)
-  const editRoleFormRef = ref()
+  let editRoledialogVisible = ref(false) //控制编辑角色对话框的显示
+  const editRoleFormRef = ref() //编辑角色表单的ref
+  //编辑角色表单
   const editRoleform = reactive({
     id: -1,
     roleName: '',
     roleDesc: ''
   })
+  //编辑角色规则
   const editRoleRules = reactive({
     roleName: [
       { required: true, message: '请输入角色名称', trigger: 'blur' },

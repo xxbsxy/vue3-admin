@@ -16,7 +16,7 @@
       <!-- 商品列表 -->
       <div class="goods-list">
         商品列表
-        <el-button type="primary" class="add-btn"> 添加商品 </el-button>
+        <el-button type="primary" class="add-btn" @click="open"> 添加商品 </el-button>
       </div>
       <el-table :data="goods" stripe style="width: 100%" border>
         <el-table-column type="index" width="60" label="序号" />
@@ -26,7 +26,6 @@
         <el-table-column label="操作" width="200">
           <template #default="scope">
             <div class="control">
-              <!-- <el-link type="primary" :icon="EditPen" :underline="false">编辑</el-link> -->
               <el-link
                 type="danger"
                 :icon="Delete"
@@ -39,6 +38,70 @@
           </template>
         </el-table-column>
       </el-table>
+      <form-drawer ref="deawerRef" title="添加商品" @submit="submitGoods" @closed="deawerClosed">
+        <el-steps :active="acticeIndex - 0" align-center>
+          <el-step title="基本信息" />
+          <!-- <el-step title="商品参数" />
+          <el-step title="商品属性" /> -->
+          <el-step title="商品图片" />
+          <el-step title="商品内容" />
+          <el-step title="完成" />
+        </el-steps>
+        <el-form
+          :inline="true"
+          :model="addGoodsForm"
+          :rules="addGoodsRules"
+          label-position="top"
+          ref="addGoodsRef"
+        >
+          <el-tabs tab-position="left" v-model="acticeIndex" :before-leave="beforeLeave">
+            <el-tab-pane label="基本信息" name="0">
+              <el-form-item label="商品名称" prop="goods_name">
+                <el-input v-model="addGoodsForm.goods_name" />
+              </el-form-item>
+              <el-form-item label="商品价格" prop="goods_price">
+                <el-input v-model="addGoodsForm.goods_price" />
+              </el-form-item>
+              <el-form-item label="商品重量" prop="goods_weight">
+                <el-input v-model="addGoodsForm.goods_weight" />
+              </el-form-item>
+              <el-form-item label="商品数量" prop="goods_number">
+                <el-input v-model="addGoodsForm.goods_number" />
+              </el-form-item>
+              <el-form-item label="商品分类" prop="goods_number">
+                <el-cascader
+                  :options="categories"
+                  :props="cascaderProps"
+                  @change="handleCascaderchange"
+                />
+              </el-form-item>
+            </el-tab-pane>
+            <!-- <el-tab-pane label="商品参数" name="1">Config</el-tab-pane>
+            <el-tab-pane label="商品属性" name="2">Role</el-tab-pane> -->
+            <el-tab-pane label="商品图片" name="3">
+              <el-upload
+                class="upload-demo"
+                action="http://43.143.0.76:8889/api/private/v1/upload"
+                drag
+                multiple
+                :headers="{
+                  Authorization: token
+                }"
+                list-type="picture"
+              >
+                <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+                <div class="el-upload__text">拖拽或者<em>点击上传</em></div>
+                <template #tip>
+                  <div class="el-upload__tip">图片大小不能大于500kb</div>
+                </template>
+              </el-upload>
+            </el-tab-pane>
+            <el-tab-pane label="商品内容" name="4">
+              <QuillEditor theme="snow" ref="editorRef" />
+            </el-tab-pane>
+          </el-tabs>
+        </el-form>
+      </form-drawer>
       <!-- 分页 -->
       <el-pagination
         v-model:currentPage="pageNum"
@@ -58,16 +121,35 @@
 export default { name: 'Goods' }
 </script>
 <script setup lang="ts">
+import FormDrawer from '@/components/form-drawer/form-drawer.vue'
 import { goodsStore } from '@/store/goods'
 import { storeToRefs } from 'pinia'
-import { onMounted, ref } from '@vue/runtime-core'
-import { Search, Refresh, EditPen, Delete } from '@element-plus/icons-vue'
+import { onMounted, ref } from 'vue'
+import { Search, Refresh, Delete, UploadFilled } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
+import localCache from '@/utils/cache'
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import { usePutGoods } from './hooks/usePutGoods'
+const token = localCache.getCache('token') //获取token
 const store = goodsStore()
-const { goods, total, loading } = storeToRefs(store)
+const { goods, total, loading, categories } = storeToRefs(store)
 let pageSize = ref(15) //每页显示条数
 let pageNum = ref(1) //当前页码
-let query = ref('')
+let query = ref('') //查询参数
+const {
+  addGoodsRef,
+  editorRef,
+  deawerRef,
+  addGoodsForm,
+  addGoodsRules,
+  cascaderProps,
+  acticeIndex,
+  beforeLeave,
+  deawerClosed,
+  submitGoods,
+  handleCascaderchange
+} = usePutGoods() //添加商品
 //每页显示条数改变触发
 const handleSizeChange = (newPageSize: number) => {
   store.getGoodsList({ pagenum: pageNum.value, pagesize: newPageSize })
@@ -94,6 +176,12 @@ const reset = () => {
   pageSize.value = 15
   pageNum.value = 1
 }
+//点击添加商品打开抽屉组件
+const open = () => {
+  store.getCategories()
+  deawerRef.value.open()
+}
+//删除商品
 const deleteGoods = (id: number) => {
   ElMessageBox.confirm(`确认删除该商品吗`, '删除商品', {
     confirmButtonText: 'OK',
@@ -128,5 +216,12 @@ onMounted(() => {
     right: 10px;
     bottom: 15px;
   }
+}
+.el-tabs {
+  width: 100%;
+  margin-top: 20px;
+}
+.el-input {
+  width: 100%;
 }
 </style>

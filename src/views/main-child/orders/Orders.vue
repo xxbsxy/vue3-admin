@@ -20,7 +20,7 @@
             {{ formatTimeStamp(scope.row.update_time * 1000) }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="200">
+        <el-table-column label="操作" width="180">
           <template #default="scope">
             <div class="control">
               <el-link
@@ -92,7 +92,7 @@ export default { name: 'Orders' }
 import { ordersStore } from '@/store/orders'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
-import { EditPen, Delete } from '@element-plus/icons-vue'
+import { EditPen } from '@element-plus/icons-vue'
 import { formatTimeStamp } from '@/utils/formatTimeStamp'
 import { useEditOrders } from './hooks/useEditOrders'
 const store = ordersStore()

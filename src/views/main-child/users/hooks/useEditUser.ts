@@ -2,14 +2,16 @@ import { userStore } from '@/store/user'
 import { reactive, ref } from 'vue'
 export function useEditUser(pageSize: number, pageNum: number) {
   const store = userStore()
-  const editUserdialogVisible = ref(false)
-  const editUserFormRef = ref()
+  const editUserdialogVisible = ref(false)//控制编辑用户对话框的显示
+  const editUserFormRef = ref()//编辑用户表单的ref
+  //编辑用户表单
   const editUserform = reactive({
     id: -1,
     username: '',
     email: '',
     mobile: ''
   })
+  //编辑用户表单规则
   const editUserRules = reactive({
     email: [
       { required: true, message: '请输入邮箱', trigger: 'blur' },

@@ -42,7 +42,12 @@
       </el-table>
     </el-card>
     <!-- 添加角色对话框 -->
-    <el-dialog v-model="addRoledialogVisible" title="编辑用户" width="30%">
+    <el-dialog
+      v-model="addRoledialogVisible"
+      title="编辑用户"
+      width="30%"
+      @close="addRoledialogClose"
+    >
       <el-form :model="addRoleform" label-width="80px" :rules="addRoleRules" ref="addRoleFormRef">
         <el-form-item label="角色名称" prop="roleName">
           <el-input v-model="addRoleform.roleName" />
@@ -124,7 +129,14 @@ const store = roleStore()
 const { roles, rightsTree } = storeToRefs(store)
 const { editRoledialogVisible, editRoleFormRef, editRoleform, editRoleRules, getRole, editRole } =
   useEditRole() //编辑用户
-const { addRoledialogVisible, addRoleFormRef, addRoleform, addRoleRules, addRole } = useAddRole() //添加用户
+const {
+  addRoledialogVisible,
+  addRoleFormRef,
+  addRoleform,
+  addRoleRules,
+  addRole,
+  addRoledialogClose
+} = useAddRole() //添加角色
 const {
   assignRightsdialogVisible,
   treeRef,

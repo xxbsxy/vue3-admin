@@ -1,6 +1,6 @@
 <template>
   <div class="beautiful">
-    <h2>导航栏美化</h2>
+    <h2>头部美化</h2>
     <el-row :gutter="20" class="header-color">
       <el-col :span="5" v-for="(item, index) in headerColorList" :key="index">
         <div
@@ -40,7 +40,7 @@
 export default { name: 'Beatuiful' }
 </script>
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import { beautifulStore } from '@/store/beautiful'
 import { storeToRefs } from 'pinia'
 const store = beautifulStore()
@@ -59,7 +59,7 @@ const mainColorList = reactive([
   { title: '满江红', color: '#e92b77' },
   { title: '松霜绿', color: '#82a68c' }
 ])
-
+//头部颜色改变
 const changHeaderColor = (headerColor: string, index: number) => {
   store.headerIndex = index
   store.headerColor = headerColor
@@ -68,6 +68,7 @@ const headerColorChange = (newColor: string) => {
   store.headerColor = newColor
   store.headerIndex = -1
 }
+//主体颜色改变
 const changMainColor = (mainColor: string, index: number) => {
   store.mainIndex = index
   store.mainColor = mainColor

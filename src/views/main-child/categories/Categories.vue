@@ -59,7 +59,6 @@
             :options="categoriesType"
             :props="cascaderProps"
             @change="handleCategoriesChange"
-            clearable
           />
         </el-form-item>
       </el-form>
@@ -94,6 +93,7 @@ const {
 } = useAddCategories() //添加分类
 const store = cateroriesStore()
 const { categories, categoriesType, loading } = storeToRefs(store)
+// 树形结构的配置
 const defaultProps = {
   children: 'children',
   label: 'cat_name'

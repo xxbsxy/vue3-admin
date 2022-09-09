@@ -2,17 +2,20 @@ import { reactive, ref } from 'vue'
 import { ordersStore } from '@/store/orders'
 export function useEditOrders( pageSize: number, pageNum: number) {
   const store = ordersStore()
-  let editOrderdialogVisible = ref(false)
+  let editOrderdialogVisible = ref(false) //编辑对话框的显示
+  //支付方式
   const pay = reactive([
     { state: 1, title: '未支付' },
     { state: 2, title: '支付宝' },
     { state: 3, title: '微信支付' },
     { state: 4, title: '银行卡' }
   ])
+  //是否发货
   const send = reactive([
     { state: 0, title: '否' },
     { state: 1, title: '是' }
   ])
+  //编辑权限表单
   const editOrderform = reactive({
     id: -1,
     order_price: '',

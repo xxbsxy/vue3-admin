@@ -2,7 +2,8 @@ import { userStore } from '@/store/user'
 import { reactive, ref } from 'vue'
 export function useAssignUser(pageSize: number, pageNum: number) {
   const store = userStore()
-  const assignRoledialogVisible = ref(false)
+  const assignRoledialogVisible = ref(false) //控制分配角色对话框的显示
+  //分配角色的表单
   const assignRoleform = reactive({
     id: -1,
     username: '',

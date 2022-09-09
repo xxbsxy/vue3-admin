@@ -88,7 +88,7 @@
       />
     </el-card>
     <!-- 添加用户对话框 -->
-    <el-dialog v-model="addUserdialogVisible" title="添加用户" width="30%">
+    <el-dialog v-model="addUserdialogVisible" title="添加用户" width="30%" @close="addDialogClose">
       <el-form :model="addUserform" label-width="80px" :rules="addUserRules" ref="addUserFormRef">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="addUserform.username" />
@@ -119,7 +119,7 @@
         ref="editUserFormRef"
       >
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="editUserform.username" />
+          <el-input v-model="editUserform.username" disabled />
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="editUserform.email" />
@@ -182,10 +182,8 @@ const store = userStore()
 const { users, total, roles } = storeToRefs(store)
 let pageSize = ref(10) //每页显示条数
 let pageNum = ref(1) //当前页码
-const { addUserdialogVisible, addUserFormRef, addUserform, addUserRules, addUser } = useAddUser(
-  pageSize.value,
-  pageNum.value
-)
+const { addUserdialogVisible, addUserFormRef, addUserform, addUserRules, addUser, addDialogClose } =
+  useAddUser(pageSize.value, pageNum.value)
 const {
   editUserdialogVisible,
   editUserFormRef,
