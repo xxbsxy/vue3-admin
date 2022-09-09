@@ -27,10 +27,10 @@ export function useAddRole() {
       if (isValidate) {
         store.addRoles(addRoleform).then(() => {
           addRoleFormRef.value.resetFields()
+          addRoledialogVisible.value = false
         })
       }
     })
-    addRoledialogVisible.value = false
 
   }
    //添加角色对话框关闭的回调
