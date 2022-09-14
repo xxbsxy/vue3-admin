@@ -85,9 +85,6 @@
   </div>
 </template>
 
-<script lang="ts">
-export default { name: 'Orders' }
-</script>
 <script setup lang="ts">
 import { ordersStore } from '@/store/orders'
 import { storeToRefs } from 'pinia'

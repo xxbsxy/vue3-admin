@@ -22,7 +22,6 @@ export function useAssignRight() {
     const keys = [...treeRef.value.getCheckedKeys(), ...treeRef.value.getHalfCheckedKeys()]
     store.assignRoleRights({ id: roleId.value, rights: keys.join(',') })
     assignRightsdialogVisible.value = false
-    console.log(keys)
   }
   //分配权限对话框关闭
   const assignRightsDialogClose = () => {

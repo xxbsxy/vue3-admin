@@ -82,9 +82,6 @@
   </div>
 </template>
 
-<script lang="ts">
-export default { name: 'Params' }
-</script>
 <script setup lang="ts">
 import { EditPen, Delete } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
@@ -124,7 +121,6 @@ const addOnlyAttributes = () => {
     inputErrorMessage: '不能为空',
     inputValue: ''
   }).then((value: any) => {
-    console.log(activeName.value)
     store
       .addAttributes({ attr_name: value.value, id: selectKeys[2], attr_sel: [activeName.value] })
       .then(() => {
@@ -141,7 +137,6 @@ const addManyAttributes = () => {
     inputErrorMessage: '不能为空',
     inputValue: ''
   }).then((value: any) => {
-    console.log(activeName.value)
     store
       .addAttributes({ attr_name: value.value, id: selectKeys[2], attr_sel: [activeName.value] })
       .then(() => {
@@ -164,7 +159,6 @@ const editAttributes = (attrid: number, name: string) => {
     inputErrorMessage: '不能为空',
     inputValue: name
   }).then((value: any) => {
-    console.log(activeName.value)
     store
       .putAttributes({
         attr_name: value.value,

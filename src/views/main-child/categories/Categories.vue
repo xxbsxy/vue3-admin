@@ -72,9 +72,6 @@
   </div>
 </template>
 
-<script lang="ts">
-export default { name: 'Categories' }
-</script>
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { EditPen, Delete } from '@element-plus/icons-vue'

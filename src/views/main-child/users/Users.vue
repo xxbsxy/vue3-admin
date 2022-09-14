@@ -165,9 +165,6 @@
   </div>
 </template>
 
-<script lang="ts">
-export default { name: 'Users' }
-</script>
 <script setup lang="ts">
 import { Search, Refresh, EditPen, Delete, Setting } from '@element-plus/icons-vue'
 import { reactive, ref, onMounted } from 'vue'

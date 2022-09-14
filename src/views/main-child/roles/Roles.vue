@@ -113,9 +113,6 @@
   </div>
 </template>
 
-<script lang="ts">
-export default { name: 'Roles' }
-</script>
 <script setup lang="ts">
 import { EditPen, Delete, Setting } from '@element-plus/icons-vue'
 import { roleStore } from '@/store/roles'

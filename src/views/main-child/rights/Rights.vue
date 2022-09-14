@@ -17,9 +17,6 @@
   </div>
 </template>
 
-<script lang="ts">
-export default { name: 'Rigths' }
-</script>
 <script setup lang="ts">
 import { rightStore } from '@/store/rights'
 import { storeToRefs } from 'pinia'

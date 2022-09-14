@@ -21,9 +21,6 @@
   </el-container>
 </template>
 
-<script>
-export default { name: 'Main' }
-</script>
 <script setup>
 import NavMeun from '@/components/nav-menu/nav-menu.vue'
 import NavHeader from '@/components/nav-header/nav-header.vue'

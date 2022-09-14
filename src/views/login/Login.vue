@@ -38,9 +38,6 @@
   </div>
 </template>
 
-<script lang="ts">
-export default { name: 'Login' }
-</script>
 <script setup lang="ts">
 import { UserFilled, PhoneFilled } from '@element-plus/icons-vue'
 import { onBeforeUnmount, onMounted, reactive, ref } from 'vue'

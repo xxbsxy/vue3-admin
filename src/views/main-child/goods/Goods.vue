@@ -117,9 +117,6 @@
   </div>
 </template>
 
-<script lang="ts">
-export default { name: 'Goods' }
-</script>
 <script setup lang="ts">
 import FormDrawer from '@/components/form-drawer/form-drawer.vue'
 import { goodsStore } from '@/store/goods'

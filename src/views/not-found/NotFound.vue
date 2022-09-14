@@ -8,9 +8,6 @@
   </div>
 </template>
 
-<script lang="ts">
-export default { name: 'NotFound' }
-</script>
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 const router = useRouter()

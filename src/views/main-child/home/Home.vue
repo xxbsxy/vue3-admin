@@ -36,9 +36,6 @@
   </div>
 </template>
 
-<script lang="ts">
-export default { name: 'Reports' }
-</script>
 <script setup lang="ts">
 import { reactive, onMounted } from 'vue'
 import { init } from './hook/useEcharts'

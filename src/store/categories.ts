@@ -32,7 +32,6 @@ export const cateroriesStore = defineStore('caterories', {
     },
     async deleteCategories(id: number) {
       const res: any = await deleteCategories(id)
-      console.log(res);
       if (res.meta.status === 200) {
         ElMessage.success('删除成功')
       } else {
@@ -41,7 +40,6 @@ export const cateroriesStore = defineStore('caterories', {
     },
     async putCategories(data:PutCategoriesRule) {
       const res: any = await putCategories(data.id,data.name)
-      console.log(res);
       if (res.meta.status === 200) {
         ElMessage.success('更新成功')
       } else {
@@ -50,8 +48,6 @@ export const cateroriesStore = defineStore('caterories', {
     },
     async addCategories(data:addCategoriesRule) {
      const res:any = await addCategories(data.cat_pid,data.cat_name,data.cat_level)
-     console.log(res);
-
      if (res.meta.status === 201) {
       ElMessage.success('添加分类成功')
     } else {

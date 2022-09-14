@@ -75,7 +75,6 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 const store = loginStore()
 const { menus, isCollapse } = storeToRefs(store)
-console.log(route.path)
 </script>
 <style scoped lang="less">
 .logo {

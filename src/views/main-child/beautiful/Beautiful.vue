@@ -36,9 +36,6 @@
   </div>
 </template>
 
-<script lang="ts">
-export default { name: 'Beatuiful' }
-</script>
 <script setup lang="ts">
 import { reactive } from 'vue'
 import { beautifulStore } from '@/store/beautiful'
