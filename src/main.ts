@@ -6,6 +6,9 @@ import { createPinia } from 'pinia'
 import 'element-plus/theme-chalk/el-loading.css'
 import 'element-plus/theme-chalk/el-message.css'
 import 'element-plus/theme-chalk/el-message-box.css'
+import { useDirective } from '@/directives/index'
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
-createApp(App).use(pinia).use(router).mount('#app')
+const app = createApp(App)
+useDirective(app)
+app.use(pinia).use(router).mount('#app')

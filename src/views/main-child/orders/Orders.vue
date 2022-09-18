@@ -17,7 +17,7 @@
         <el-table-column prop="is_send" label="是否发货" />
         <el-table-column prop="email" label="订单更新时间">
           <template #default="scope">
-            {{ formatTimeStamp(scope.row.update_time * 1000) }}
+            <div v-time>{{ scope.row.update_time }}</div>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="180">
@@ -90,7 +90,6 @@ import { ordersStore } from '@/store/orders'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { EditPen } from '@element-plus/icons-vue'
-import { formatTimeStamp } from '@/utils/formatTimeStamp'
 import { useEditOrders } from './hooks/useEditOrders'
 const store = ordersStore()
 const { orders, total } = storeToRefs(store)

@@ -7,74 +7,75 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/',
-   redirect:'/home'
+    redirect: '/home'
   },
   {
+    name: 'home',
     path: '/',
     component: () => import('@/views/main/Main.vue'),
     children: [
       {
-        path: '/home',
+        path: 'home',
         component: () => import('@/views/main-child/home/Home.vue'),
-        meta:{
-          title:'后台首页'
+        meta: {
+          title: '后台首页'
         }
       },
       {
         path: 'users',
         component: () => import('@/views/main-child/users/Users.vue'),
-        meta:{
-          title:'用户列表'
+        meta: {
+          title: '用户列表'
         }
       },
 
       {
         path: 'roles',
         component: () => import('@/views/main-child/roles/Roles.vue'),
-        meta:{
-          title:'角色列表'
+        meta: {
+          title: '角色列表'
         }
       },
       {
         path: 'rights',
         component: () => import('@/views/main-child/rights/Rights.vue'),
-        meta:{
-          title:'权限列表'
+        meta: {
+          title: '权限列表'
         }
       },
       {
         path: 'goods',
         component: () => import('@/views/main-child/goods/Goods.vue'),
-        meta:{
-          title:'商品列表'
+        meta: {
+          title: '商品列表'
         }
       },
       {
         path: 'params',
         component: () => import('@/views/main-child/params/Params.vue'),
-        meta:{
-          title:'分类参数'
+        meta: {
+          title: '分类参数'
         }
       },
       {
         path: 'categories',
         component: () => import('@/views/main-child/categories/Categories.vue'),
-        meta:{
-          title:'商品分类'
+        meta: {
+          title: '商品分类'
         }
       },
       {
         path: 'orders',
         component: () => import('@/views/main-child/orders/Orders.vue'),
-        meta:{
-          title:'订单列表'
+        meta: {
+          title: '订单列表'
         }
       },
       {
         path: 'beautiful',
         component: () => import('@/views/main-child/beautiful/Beautiful.vue'),
-        meta:{
-          title:'页面美化'
+        meta: {
+          title: '页面美化'
         }
       }
     ]

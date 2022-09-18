@@ -29,7 +29,7 @@
         <el-table-column prop="email" label="邮箱" />
         <el-table-column prop="email" label="创建时间">
           <template #default="scope">
-            {{ formatTimeStamp(scope.row.create_time * 1000) }}
+            <div v-time>{{ scope.row.create_time }}</div>
           </template>
         </el-table-column>
         <el-table-column prop="role_name" label="角色" />
@@ -170,7 +170,6 @@ import { Search, Refresh, EditPen, Delete, Setting } from '@element-plus/icons-v
 import { reactive, ref, onMounted } from 'vue'
 import { userStore } from '@/store/user'
 import { storeToRefs } from 'pinia'
-import { formatTimeStamp } from '@/utils/formatTimeStamp'
 import { ElMessageBox } from 'element-plus'
 import { useAddUser } from './hooks/useAddUser'
 import { useEditUser } from './hooks/useEditUser'
