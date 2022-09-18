@@ -3,7 +3,7 @@ import { getRightsList} from '@/api/rights'
 import { ElMessage } from 'element-plus'
 
 export const rightStore = defineStore('right', {
-  persist: true,
+  // persist: true,
   state: () => {
     return {
       rights:[]

@@ -18,7 +18,7 @@ interface PutGoodsRule {
   attrs?: Array<string>
 }
 export const goodsStore = defineStore('goods', {
-  persist: true,
+  // persist: true,
   state: () => {
     return {
       goods: [] as any[],

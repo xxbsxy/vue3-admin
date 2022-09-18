@@ -15,11 +15,7 @@
         <el-menu-item index="/home"> 首页 </el-menu-item>
       </el-menu-item-group>
     </el-sub-menu>
-    <el-sub-menu
-      v-for="item in menus.slice(0, menus.length - 1)"
-      :index="item.id + ''"
-      :key="item.id"
-    >
+    <el-sub-menu v-for="item in menuList" :index="item.id + ''" :key="item.id">
       <template #title>
         <UserFilled
           style="width: 1em; height: 1em; margin-right: 8px"
@@ -72,9 +68,20 @@ import {
 import { loginStore } from '@/store/login'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
+import { computed } from 'vue'
+
 const route = useRoute()
 const store = loginStore()
 const { menus, isCollapse } = storeToRefs(store)
+const menuList = computed(() => {
+  const menuList = [] as any[]
+  menus.value.forEach((item) => {
+    if (item.authName !== '数据统计') {
+      menuList.push(item)
+    }
+  })
+  return menuList
+})
 </script>
 <style scoped lang="less">
 .logo {

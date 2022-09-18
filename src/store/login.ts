@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { beautifulStore } from './beautiful'
 import { storeToRefs } from 'pinia'
 const store = beautifulStore()
-const { headerColor,mainColor} = storeToRefs(store)
+const { headerColor, mainColor } = storeToRefs(store)
 import { getAccount } from '@/api/accountLogin'
 import localCache from '../utils/cache'
 import { getMenu } from '@/api/menu'
@@ -14,11 +14,11 @@ export const loginStore = defineStore('login', {
   persist: true,
   state: () => {
     return {
-      profile: {},
-      menus:[] as any[],
-      isCollapse:false,
-      tabList:[] as any[],
-      activeName:'后台首页',
+      profile: {} as any,
+      menus: [] as any[],
+      isCollapse: false,
+      tabList: [] as any[],
+      activeName: '后台首页',
       headerColor,
       mainColor
     }

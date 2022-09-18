@@ -12,7 +12,7 @@ interface editOrder {
   order_pay?:number
 }
 export const ordersStore = defineStore('orders', {
-  persist: true,
+  // persist: true,
   state: () => {
     return {
       orders:[],

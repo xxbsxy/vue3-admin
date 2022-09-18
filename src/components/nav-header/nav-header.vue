@@ -26,7 +26,7 @@
       <img src="@/assets/img/tx.png" class="avatar" />
       <el-dropdown>
         <span class="el-dropdown-link">
-          <span class="username">admin</span>
+          <span class="username">{{ profile.username }}</span>
           <ArrowDown style="width: 1em; height: 1em" color="#fff" class="arrow-down" />
         </span>
         <template #dropdown>
@@ -51,7 +51,7 @@ import { useRouter } from 'vue-router'
 import localCache from '../../utils/cache'
 const router = useRouter()
 const store = loginStore()
-const { isCollapse } = storeToRefs(store)
+const { isCollapse, profile } = storeToRefs(store)
 //折叠切换
 const changeCollapse = () => {
   store.isCollapse = !isCollapse.value
@@ -67,10 +67,13 @@ const outLogin = () => {
       type: 'success',
       message: '退出登录成功'
     })
-    localCache.clearCache()
-    router.push({
-      path: '/login'
-    })
+    router
+      .push({
+        path: '/login'
+      })
+      .then(() => {
+        localCache.clearCache()
+      })
   })
 }
 </script>

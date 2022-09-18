@@ -11,7 +11,7 @@ interface addCategoriesRule {
   cat_level:number
 }
 export const cateroriesStore = defineStore('caterories', {
-  persist: true,
+  // persist: true,
   state: () => {
     return {
       categories: [] as any[],

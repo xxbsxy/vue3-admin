@@ -18,7 +18,7 @@ interface assignRights{
   rights:string
 }
 export const roleStore = defineStore('role', {
-  persist: true,
+  // persist: true,
   state: () => {
     return {
       roles:[],

@@ -27,7 +27,7 @@ interface assignRole {
   rid:number
 }
 export const userStore = defineStore('user', {
-  persist: true,
+  // persist: true,
   state: () => {
     return {
       users:[] as any[],
