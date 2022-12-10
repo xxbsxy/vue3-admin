@@ -1,40 +1,37 @@
 {
   "compilerOptions": {
+    //目标代码
     "target": "esnext",
+    //模块化
     "module": "esnext",
+    //ts严格模式
     "strict": true,
+    //jsx的处理方式
     "jsx": "preserve",
+    //按照node模块解析规则
     "moduleResolution": "node",
+    //跳过整个库的类型检测
     "skipLibCheck": true,
+    //esmodule和commonjs相互调用
     "esModuleInterop": true,
+    //允许合成默认模块导入
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": true,
+    //是否生成sourcemap文件
     "sourceMap": true,
+    //文件路径解析的基本url
     "baseUrl": ".",
-    "types": [
-      "webpack-env"
-    ],
+    "types": ["webpack-env"],
+    //路径的映射
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
+    //指定需要的库
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  //ts需要编译的文件
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "tests/**/*.ts", "tests/**/*.tsx"],
+  //ts不需要编译的文
+  "exclude": ["node_modules"]
 }

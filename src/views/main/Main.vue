@@ -21,7 +21,7 @@
   </el-container>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import NavMeun from '@/components/nav-menu/nav-menu.vue'
 import NavHeader from '@/components/nav-header/nav-header.vue'
 import TabList from '@/components/tag-list/tag-list'

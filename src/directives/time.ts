@@ -1,11 +1,14 @@
 export function directiveTiem(app: any) {
   app.directive('time', {
     mounted: (el: any) => {
-      el.textContent = formatTimeStamp(el.textContent * 1000)
+      el.textContent = formatTimeStamp(el.textContent)
     }
   })
 }
 function formatTimeStamp(TimeStamp: number) {
+  if (TimeStamp.toString().length === 10) {
+    TimeStamp = TimeStamp * 1000
+  }
   let date = new Date(TimeStamp)
   let y = date.getFullYear()
   let MM: number | string = date.getMonth() + 1
